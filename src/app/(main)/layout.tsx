@@ -2,7 +2,7 @@ import React, { ReactNode } from "react";
 
 const DashboardLayout = ({ children }: { children: ReactNode }) => {
   return (
-    <div className="p-10 mt-20 md:px-20 lg:px-32 xl:px-56 2xl:px-56 overflow-auto">
+    <div className="max-w-6xl p-10 mt-10 lg:mt-20 2xl:mt-24  mx-auto overflow-x-hidden">
       {children}
     </div>
   );

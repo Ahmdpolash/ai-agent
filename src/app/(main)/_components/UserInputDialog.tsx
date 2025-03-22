@@ -81,7 +81,7 @@ const UserInputDialog = ({
                 ))}
               </div>
 
-              <div className="flex gap *:cursor-pointer gap-5 mt-5 justify-end">
+              <div className="flex gap cursor-pointer *:cursor-pointer gap-5 mt-5 justify-end">
                 <DialogClose asChild>
                   <Button variant={"ghost"}>Cancel</Button>
                 </DialogClose>

@@ -12,11 +12,11 @@ export default function FeaturedAssistant() {
   const user = useUser();
 
   return (
-    <div className="container mx-auto  max-w-6x">
+    <div className="">
       <div className="flex justify-between items-center mb-8">
         <div>
           <h2 className="text-gray-500 font-medium">My Workspace</h2>
-          <h1 className="text-3xl font-bold">
+          <h1 className="text-3xl font-bold text-balance">
             Welcome back, {user?.displayName}
           </h1>
         </div>
@@ -25,24 +25,20 @@ export default function FeaturedAssistant() {
         </Button>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4 lg:gap-7  mb-12">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-5 gap-5 mb-12">
         {data?.map((item: ICardInfo, idx) => (
           <BlurFade key={item.image} delay={0.25 + idx * 0.05} inView>
             <UserInputDialog item={item}>
-              <div
-                key={idx}
-                className="bg-gray-100 rounded-lg p-4 border border-gray-300 cursor-pointer flex flex-col items-center"
-              >
-                <div className="mb-4  flex items-center justify-center">
-                  <Image
-                    src={item.image}
-                    alt={item?.title}
-                    width={120}
-                    height={120}
-                    className="h-[70px] w-[70px] hover:rotate-12 transition-all"
-                  />
-                </div>
-                <span className="font-medium text-center">{item.title}</span>
+              <div className="bg-gray-20 bg-gray-100 flex  flex-col justify-center items-center p-6 rounded-lg border border-gray-300 w-[200px] cursor-pointer">
+                <Image
+                  src={item.image}
+                  alt={item?.title}
+                  width={150}
+                  height={150}
+                  className="h-[70px] mb-4 w-[70px] hover:rotate-12 transition-all"
+                />
+
+                <h2 className="font-medium text-center">{item.title}</h2>
               </div>
             </UserInputDialog>
           </BlurFade>
