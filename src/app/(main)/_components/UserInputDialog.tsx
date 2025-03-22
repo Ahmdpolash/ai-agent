@@ -13,6 +13,9 @@ import { assistant } from "@/lib/data";
 import { ICardInfo, IExpart } from "@/types";
 import Image from "next/image";
 import { useState } from "react";
+import { api } from "../../../../convex/_generated/api";
+import { useMutation } from "convex/react";
+import { LoaderCircle } from "lucide-react";
 
 const UserInputDialog = ({
   children,
@@ -24,6 +27,24 @@ const UserInputDialog = ({
   const [selected, setSelected] = useState<string | undefined>();
 
   const [topic, setTopic] = useState<string | undefined>();
+
+  // api
+  const CreateDiscussionRoom = useMutation(api.DiscussionRoom.CreateNewRoom);
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async () => {
+    setLoading(true);
+    const result = await CreateDiscussionRoom({
+      topic: topic || "",
+      coachingOption: item?.title || "",
+      expertName: selected || "",
+    });
+
+    console.log(result);
+
+    setLoading(false);
+  };
+
   return (
     <Dialog>
       <DialogTrigger>{children}</DialogTrigger>
@@ -64,7 +85,12 @@ const UserInputDialog = ({
                 <DialogClose asChild>
                   <Button variant={"ghost"}>Cancel</Button>
                 </DialogClose>
-                <Button disabled={!topic || !selected} className="bg-blue-500">
+                <Button
+                  disabled={!topic || !selected || loading}
+                  onClick={handleSubmit}
+                  className="bg-blue-500"
+                >
+                  {loading && <LoaderCircle className="animate-spin" />}
                   Next
                 </Button>
               </div>
