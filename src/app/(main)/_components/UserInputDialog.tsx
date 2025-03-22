@@ -1,3 +1,5 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -16,6 +18,7 @@ import { useState } from "react";
 import { api } from "../../../../convex/_generated/api";
 import { useMutation } from "convex/react";
 import { LoaderCircle } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 const UserInputDialog = ({
   children,
@@ -24,9 +27,11 @@ const UserInputDialog = ({
   children: any;
   item: ICardInfo;
 }) => {
-  const [selected, setSelected] = useState<string | undefined>();
+  const router = useRouter();
 
+  const [selected, setSelected] = useState<string | undefined>();
   const [topic, setTopic] = useState<string | undefined>();
+  const [openDialog, setOpenDialog] = useState(false);
 
   // api
   const CreateDiscussionRoom = useMutation(api.DiscussionRoom.CreateNewRoom);
@@ -40,13 +45,14 @@ const UserInputDialog = ({
       expertName: selected || "",
     });
 
-    console.log(result);
-
     setLoading(false);
+    setOpenDialog(false);
+
+    router.push(`/discussion-room/${result}`);
   };
 
   return (
-    <Dialog>
+    <Dialog open={openDialog} onOpenChange={setOpenDialog}>
       <DialogTrigger>{children}</DialogTrigger>
       <DialogContent>
         <DialogHeader>
