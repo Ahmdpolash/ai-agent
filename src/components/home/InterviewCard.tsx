@@ -1,9 +1,10 @@
 import React from "react";
 import { Button } from "../ui/button";
-import dayjs from 'dayjs'
+import dayjs from "dayjs";
 import Image from "next/image";
 import { cn, getRandomInterviewCover } from "@/lib/utils";
 import DisplayTechIcons from "./DisplayTechIcons";
+import Link from "next/link";
 
 const InterviewCard = ({
   interviewId,
@@ -13,6 +14,7 @@ const InterviewCard = ({
   techstack,
   createdAt,
 }: InterviewCardProps) => {
+  const feedback = null as Feedback | null;
   const normalizedType = /mix/gi.test(type) ? "Mixed" : type;
 
   const badgeColor =
@@ -20,11 +22,11 @@ const InterviewCard = ({
       Behavioral: "bg-light-400",
       Mixed: "bg-light-600",
       Technical: "bg-light-800",
-        }[normalizedType] || "bg-light-600";
-    
-        // const formattedDate = dayjs(
-        //     feedback?.createdAt || createdAt || Date.now()
-        //   ).format("MMM D, YYYY");
+    }[normalizedType] || "bg-light-600";
+
+  const formattedDate = dayjs(
+    feedback?.createdAt || createdAt || Date.now()
+  ).format("MMM D, YYYY");
 
   return (
     <div>
@@ -51,7 +53,7 @@ const InterviewCard = ({
             />
 
             {/* Interview Role  {role}*/}
-            <h3 className="mt-5 capitalize"> Interview</h3>
+            <h3 className="mt-5 capitalize">{role} Interview</h3>
 
             {/* Date & Score */}
             <div className="flex flex-row gap-5 mt-3">
@@ -62,40 +64,38 @@ const InterviewCard = ({
                   height={22}
                   alt="calendar"
                 />
-                <p>March 27 2025</p>
-                {/* <p>{formattedDate}</p> */}
+
+                <p>{formattedDate}</p>
               </div>
 
               <div className="flex flex-row gap-2 items-center">
                 <Image src="/star.svg" width={22} height={22} alt="star" />
-                {/* <p>{feedback?.totalScore || "---"}/100</p> */}
+                <p>{feedback?.totalScore || "---"}/100</p>
                 <p>50</p>
               </div>
             </div>
 
             {/* Feedback or Placeholder Text */}
             <p className="line-clamp-2 mt-5">
-              {/* {feedback?.finalAssessment ||
-              "You haven't taken this interview yet. Take it now to improve your skills."} */}
-              You haven't taken this interview yet. Take it now to improve your
-              skills
+              {feedback?.finalAssessment ||
+                "You haven't taken this interview yet. Take it now to improve your skills."}
             </p>
           </div>
 
           <div className="flex flex-row justify-between">
             <DisplayTechIcons techStack={techstack} />
 
-            {/* <Button className="btn-primary">
-            <link
-              href={
-                feedback
-                  ? `/interview/${interviewId}/feedback`
-                  : `/interview/${interviewId}`
-              }
-            >
-              {feedback ? "Check Feedback" : "View Interview"}
-            </link>
-          </Button> */}
+            <Button className="btn-primary">
+              <Link
+                href={
+                  feedback
+                    ? `/interview/${interviewId}/feedback`
+                    : `/interview/${interviewId}`
+                }
+              >
+                {feedback ? "Check Feedback" : "View Interview"}
+              </Link>
+            </Button>
           </div>
         </div>
       </div>
