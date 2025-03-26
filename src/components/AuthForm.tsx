@@ -5,21 +5,34 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 import { Button } from "@/components/ui/button";
-import { Form } from "@/components/ui/form";
+import { Form, FormMessage } from "@/components/ui/form";
 import Image from "next/image";
 
 import FormField from "./FormField";
 import Link from "next/link";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 const authFormSchema = (type: FormType) => {
   return z.object({
-    name: type === "sign-up" ? z.string().min(3) : z.string().optional(),
-    email: z.string().email(),
-    password: z.string().min(3),
+    name:
+      type === "sign-up"
+        ? z.string().min(3, {
+            message: "Name must be at least 3 characters",
+          })
+        : z.string().optional(),
+    email: z
+      .string()
+      .email({ message: "Please enter your valid email address" }),
+    password: z.string().min(3, {
+      message: "password must be at least 4 digits",
+    }),
   });
 };
 
 const AuthForm = ({ type }: { type: FormType }) => {
+  const router = useRouter();
+
   // 1. Define your form.
   const formSchema = authFormSchema(type);
   const form = useForm<z.infer<typeof formSchema>>({
@@ -33,9 +46,20 @@ const AuthForm = ({ type }: { type: FormType }) => {
 
   // 2. Define a submit handler.
   function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
+    try {
+      if (type === "sign-up") {
+        console.log("SIGN UP", values);
+        toast.success("Account created successfully. Please sign in.");
+        router.push("/sign-in");
+      } else {
+        console.log("SIGN IN", values);
+        toast.success("Signed in successfully.");
+        router.push("/");
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(`There was an error ${error}`);
+    }
   }
 
   const isSignIn = type === "sign-in";
